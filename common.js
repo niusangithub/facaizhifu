@@ -114,6 +114,12 @@ var Common = {
         sleep(1000);
         return isflag;
     },
+    //双击
+    doubleClick:function(x,y){
+        click(x,y);
+        sleep(100)
+        click(x,y);
+    },
     //以下方法，root权限才可用
     tap: function (x, y) {
         var ra = new RootAutomator();
@@ -126,7 +132,7 @@ var Common = {
         var ra = new RootAutomator();
         ra.swipe(Common.width / 2, Common.height * 0.8, Common.width / 2, Common.height / 8 * 0.4, 1000);
         ra.exit();
-    }
-    
+    },
+
 };
 
