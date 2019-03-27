@@ -1,7 +1,7 @@
 "auto";
 const utils = require('utils.js');
 
-//全民小视频
+//全民小视频，提现到百度钱包，太麻烦，先略过
 var quanminxiaoshipin = {
     appName:'全民小视频',
     appPackageNmae:'com.baidu.minivideo',
@@ -51,7 +51,7 @@ var quanminxiaoshipin = {
             toast('返回键');
             sleep(2000);
             
-            swipe(utils.width/2,utils.height/8,utils.width/2,utils.height*0.8,1000);
+            swipe(utils.width/2,utils.height/8,utils.width/2,utils.height*0.9,1000);
            
             toast('刷新');
             sleep(10000);//等待刷新完成
