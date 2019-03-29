@@ -1,5 +1,5 @@
 var util = {};
-
+//add by wangguangbin，此文件可使用import方式导入使用
 util.width = device.width, //设备的宽
 util.height =  device.height, //设备的高
 //通过名字||包名，启动app
@@ -83,21 +83,21 @@ util.findDomInsideByText = function(txt,x,y,x1,y1){
     }
 },
 //通过id，点击控件
-util.clickById = function(idStr){
+util.clickById = function(eleId){
     var isflag = false; //是否存在
-    var dom = id(idStr).findOnce();
+    var dom = id(eleId).find();
     if(dom){
         isflag = true;
         dom.click();
+        sleep(1000);
     }
-    sleep(1000);
     return isflag;
 },
 //通过text，点击控件
 util.clickByText = function(txt){
     var isflag = false; //是否存在
-    var dom = text(txt).findOnce();
-    if(dom){
+    var dom = text(txt).find();
+    if(!dom.empty){
         isflag = true;
         dom.click();
     }
@@ -107,7 +107,7 @@ util.clickByText = function(txt){
     //通过desc，点击控件
 util.clickByDesc = function(txt){
     var isflag = false; //是否存在
-    var dom = desc(txt).findOnce();
+    var dom = desc(txt).find();
     if(dom){
         isflag = true;
         dom.click();
@@ -122,7 +122,35 @@ util.doubleClick = function(x,y){
     sleep(100)
     click(x,y);
 },
-// util.swipe = 
+
+//通过UI文本的坐标点击，并返回是否成功
+util.textBoundsClick = function(textContent) {
+    var thisEle = text(textContent).find();
+    var flag = false;
+    if (!thisEle.empty) {
+        util.boundsClick(thisEle);
+        flag = true;
+    }
+    sleep(1000);
+    return flag;
+}
+
+//通过控件坐标点击
+util.boundsClick = function(item) {
+    var bounds = item.bounds();
+    click(bounds.centerX(),bounds.centerY());
+    sleep(1000);
+}
+
+//滑动阅读新闻
+util.swapeToRead = function() {
+    var swapetime= random(2000,6000);
+    swipe(device.width / 2, device.height * 0.8 ,
+        device.width / 2, device.height * 0.5, swapetime);
+    toast('中场休息');
+    var sleeptime = random(1000,3000);
+    sleep(sleeptime);
+}
 
 //以下方法，root权限才可用
 util.tap = function (x, y) {

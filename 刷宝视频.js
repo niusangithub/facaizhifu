@@ -132,7 +132,7 @@ var Common = {
 };
 //刷宝app
 var shuabao = {
-    packageName:'com.jm.video',
+    packageName:'刷宝',
     init:function(){
         var isHasApp = Common.startAPP(this.packageName);
         if(!isHasApp)return;     
