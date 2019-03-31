@@ -134,11 +134,23 @@ var Common = {
 var shuabao = {
     packageName:'刷宝',
     init:function(){
+        
+        toast(1);
         var isHasApp = Common.startAPP(this.packageName);
         if(!isHasApp)return;     
         sleep(15000);//等待15s
+        this.closeTongZhi();
+
         this.todoTask();
         this.lookVideo();
+    },
+    //关闭通知权限
+    closeTongZhi:function(){
+        var dom_cancle = Common.findDomByText('取消');
+        if(dom_cancle){
+            dom_cancle.click();
+            sleep(1000);
+        }
     },
     closeTaskBox:function(){
         var dom_close = Common.findDomById('imgClose');
@@ -151,7 +163,7 @@ var shuabao = {
         //切换到任务页面
         var dom_task_bounds = text('任务').findOne().bounds();
         click(dom_task_bounds.centerX(),dom_task_bounds.centerY());
-        sleep(500);
+        sleep(1500);
         //关闭弹窗
         this.closeTaskBox();
         sleep(300);
@@ -161,6 +173,7 @@ var shuabao = {
         click(834,432);
         sleep(100);
         click(507,1347);
+        sleep(1500);        
         //签到
         var dom_sign = Common.findDomByText('立即签到');
         if(dom_sign){
@@ -171,6 +184,8 @@ var shuabao = {
     },
     lookVideo:function(){
         //切换到首页
+       // swipe(Common.width/2,Common.height/8*7,Common.width/3,20,1100);
+      // gesture(600,[540,1700],[628,600],[628,20]);
         var dom_task_bounds = text('首页').findOne().bounds();
         click(dom_task_bounds.centerX(),dom_task_bounds.centerY());
         sleep(500);
@@ -180,7 +195,8 @@ var shuabao = {
                 sleepCount = 1000;
             }
             sleep(sleepCount);
-            swipe(Common.width/2,Common.height/8*7,Common.width/2,Common.height/8*1,1000);
+            click(dom_task_bounds.centerX(),dom_task_bounds.centerY());
+           // swipe(Common.width/2,Common.height/8*7,Common.width/2,Common.height/8*1,1000);
         }
     }
 };
