@@ -8,7 +8,7 @@ var huitoutiao = {
         toast(this.appName);
         var isHasApp = utils.startAPP(this.appName);
         if(!isHasApp) return;
-        sleep(8000);
+        sleep(2000);
         utils.clickById('img_close');//关闭广告弹窗
         this.readFirstPage();
     },
@@ -22,6 +22,8 @@ var huitoutiao = {
             if(newsItem){//可读新闻
                 utils.boundsClick(newsItem);
                 sleep(2000);
+
+                utils.clickByDesc('展开全文');
 
                 var repeatCount = random(4,8);
                 for(var i=0;i<repeatCount;i++){
@@ -68,6 +70,7 @@ var huitoutiao = {
         var clickResult = utils.textBoundsClick('点击领取');
         if(clickResult){
             sleep(5000);
+            utils.clickById('tv_left');//弹窗点击忽略
         }else{
             toast('时段奖励时间未到');
         }
