@@ -149,110 +149,26 @@ var MyThread = {
     }
 
 };
-//头条多多
-var toutiaoduoduo = {
-    appName: '头条多多',
-    init: function () {
-        toast(this.appName);
-        var isHasApp = Common.startAPP(this.appName);
-        if(!isHasApp)return;     
-        sleep(15000);//等待15s
-        //this.todoTask(); //晒收入
-        this.lookArticle();
-    },
-    //任务： 签到、晒收入
-    todoTask: function () {
-        toast("赚钱");
-        click(540, 1776, 810, 1920);
-        sleep(1000);
-        //签到
 
-        //晒收入
-        for (var i = 0; i < 3; i++) {
-            swipe(Common.width / 2, Common.height / 6 * 5, Common.width / 2, 50, 600);
-            sleep(200);
-        }
-        var dom_share = Common.findDomByText('晒收入');
-        if(dom_share){          
-            click(820,740);
-            sleep(6000);
-            //晒微信好友
-            for(var i=0;i<2;i++){
-                shareAction(480,1700,1);
-            }
-            //晒朋友圈
-            for(var i=0;i<2;i++){
-                shareAction(800,1700,2);
-            }
-            back();
-        }
-
-        function shareAction(x,y,type){
-            click(x,y);
-            sleep(5000);//等待8s
-            back();
-            if(type==2){
-                //朋友圈
-                sleep(1500);
-                var dom_bubaoliu = Common.findDomByText('不保留');
-                dom_bubaoliu.click();
-
-            }else{
-                sleep(500);
-                back();
-            }          
-            sleep(2000);
-        }
-    },
-    lookOneArticle:function(){
-        //开始看文章了       
-        var dom_adv = Common.findDomInsideByText('广告',0,106,1080,1208);       
-        if(!dom_adv){
-            //不是广告位
-            click(Common.width/2,370);
-            sleep(1200);//等待文章加载
-            for(var i=0;i<14;i++){                
-                var scrollHeight = random(800,1000);//滑动的距离
-                if(i>6){
-                    scrollHeight = random(50,100);  
-                }
-                var sleepTime = random(1200,2000);//睡眠时长
-                swipe(Common.width / 2, Common.height / 6 * 5, Common.width / 2, scrollHeight, 600);    
-                sleep(sleepTime);
-            }
-            //拉到文章最末尾
-            var count = random(20,25);
-            for(var i=0;i<count;i++){
-                swipe(Common.width / 2, Common.height / 6 * 5, Common.width / 2, 50, 200); 
-                sleep(200);   
-            }
-            back();
-        }
-        sleep(1000);
-    },
-    //看文章
-    lookArticle:function(){
-        toast("首页");
-        click(100,1826);
-        sleep(1000);
-        for(var i=0;i<300;i++){
-            this.lookOneArticle();
-            swipe(Common.width / 2, Common.height / 6 * 5, Common.width / 2, 800, 600);    
-        }
-        // console.log(dom_adv);
-        // console.show();
-    }
-
-}
 //刷宝app
 var shuabao = {
-    packageName:'com.jm.video',
+    packageName:'刷宝',
     init:function(){
+        toast('启动刷宝app');
         var isHasApp = Common.startAPP(this.packageName);
         if(!isHasApp)return;     
         sleep(15000);//等待15s
+        this.closeTongZhi();
         this.todoTask();
         this.lookVideo();
+    },
+    //关闭通知权限
+    closeTongZhi:function(){
+        var dom_cancle = Common.findDomByText('取消');
+        if(dom_cancle){
+            dom_cancle.click();
+            sleep(1000);
+        }
     },
     closeTaskBox:function(){
         var dom_close = Common.findDomById('imgClose');
@@ -265,22 +181,17 @@ var shuabao = {
         //切换到任务页面
         var dom_task_bounds = text('任务').findOne().bounds();
         click(dom_task_bounds.centerX(),dom_task_bounds.centerY());
-        sleep(500);
+        sleep(2500);
         //关闭弹窗
         this.closeTaskBox();
-        sleep(300);
-        //开宝箱
-        click(850,1350);
-        sleep(300);
-        click(834,432);
-        sleep(100);
-        click(507,1347);
+        sleep(3300);
         //签到
         var dom_sign = Common.findDomByText('立即签到');
         if(dom_sign){
             dom_sign.click();
             sleep(500); 
             click(834,432);   
+            sleep(500);
         }
     },
     lookVideo:function(){
@@ -294,34 +205,79 @@ var shuabao = {
                 sleepCount = 1000;
             }
             sleep(sleepCount);
-            swipe(Common.width/2,Common.height/8*7,Common.width/2,Common.height/8*1,1000);
+            click(dom_task_bounds.centerX(),dom_task_bounds.centerY());
+           // swipe(Common.width/2,Common.height/8*7,Common.width/2,Common.height/8*1,1000);
         }
-    }    
-
+    }
 };
-//以下代码意思是： 
-//先运行头条多多1个小时； 
-//然后结束头条多多脚本，继续运行 刷宝视频1小时；
+
 
 /* 此多线程方法为简陋版，后期更新 */
-toast('主线程启动运行！！');
-MyThread.startOne(toutiaoduoduo.init.bind(toutiaoduoduo)); //启动头条多多
-setTimeout(() => {
-    //当前脚本运行60分钟
-    MyThread.disposeThread();
-    Common.closeApp();
-    toast('停止运行头条多多');
-    sleep(1000);
-    MyThread.startOne(shuabao.init.bind(shuabao)); //启动刷宝app
-}, 60*60*1000);
+var FnAction = {
+    fnArray:[],
+    minutes:[], //每个app运行的时间
+    addFn:function(fn,minute){
+        this.fnArray.push(fn);
+        this.minutes.push(minute||60);
+    },
+    executeFn:function(){
+        for(var i=0;i<this.fnArray.length-1;i++){
+            var cFn = this.fnArray[i];
+            var cMinute = this.minutes[i];
+            var cFn1 = this.fnArray[i+1];
+            var cMinute1 = this.minutes[i+1];
+            if(i==0){
+                MyThread.startOne(cFn);
+            }     
+            setTimeout(() => {
+                MyThread.disposeThread();
+                Common.closeApp();
+                MyThread.startOne(cFn1);                
+            }, 1000*60*cMinute);
 
-//两个小时候，结束刷宝app
-setTimeout(() => {
-     MyThread.disposeThread();
-     Common.closeApp();
-     toast('停止运行刷宝');
-     sleep(1000);
-}, 120*60*1000);
+            //停止最后一个脚本
+            if(i==this.fnArray.length-1){
+                setTimeout(() => {
+                    MyThread.disposeThread();
+                    Common.closeApp();
+                }, 1000*60*cMinute1);
+            }    
+        }
+    }
+}
+
+// FnAction.addFn(shuabao.init.bind(shuabao));
+function fn1(){
+    toast('1');
+}
+
+function fn2(){
+    toast('2');
+}
+FnAction.addFn(fn1,1);
+FnAction.addFn(fn2,2);
+FnAction.executeFn();
+
+
+
+toast('主线程启动运行！！');
+// MyThread.startOne(shuabao.init.bind(shuabao)); //启动头条多多
+// setTimeout(() => {
+//     //当前脚本运行60分钟
+//     MyThread.disposeThread();
+//     Common.closeApp();
+//     toast('停止运行头条多多');
+//     sleep(1000);
+//     MyThread.startOne(shuabao.init.bind(shuabao)); //启动刷宝app
+// }, 60*60*1000);
+
+// //两个小时候，结束刷宝app
+// setTimeout(() => {
+//      MyThread.disposeThread();
+//      Common.closeApp();
+//      toast('停止运行刷宝');
+//      sleep(1000);
+// }, 120*60*1000);
 
 
 

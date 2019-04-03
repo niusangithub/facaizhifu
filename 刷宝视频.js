@@ -24,6 +24,7 @@ var Common = {
             packageName =packageName || currentPackage();
             var result = app.openAppSetting(packageName);
             if(result){
+                toast('找到了app');
                 sleep(2000);
                 this.findDomByText('结束运行').click();
                 sleep(1000);
@@ -33,6 +34,7 @@ var Common = {
                 home();
             }
         }catch(ex){
+            toast('没有找到app');
             home();
             sleep(200);
             home();
@@ -134,13 +136,11 @@ var Common = {
 var shuabao = {
     packageName:'刷宝',
     init:function(){
-        
-        toast(1);
+        toast('启动刷宝app');
         var isHasApp = Common.startAPP(this.packageName);
         if(!isHasApp)return;     
         sleep(15000);//等待15s
         this.closeTongZhi();
-
         this.todoTask();
         this.lookVideo();
     },
@@ -163,29 +163,21 @@ var shuabao = {
         //切换到任务页面
         var dom_task_bounds = text('任务').findOne().bounds();
         click(dom_task_bounds.centerX(),dom_task_bounds.centerY());
-        sleep(1500);
+        sleep(2500);
         //关闭弹窗
         this.closeTaskBox();
-        sleep(300);
-        //开宝箱
-        click(850,1350);
-        sleep(300);
-        click(834,432);
-        sleep(100);
-        click(507,1347);
-        sleep(1500);        
+        sleep(3300);
         //签到
         var dom_sign = Common.findDomByText('立即签到');
         if(dom_sign){
             dom_sign.click();
             sleep(500); 
             click(834,432);   
+            sleep(500);
         }
     },
     lookVideo:function(){
         //切换到首页
-       // swipe(Common.width/2,Common.height/8*7,Common.width/3,20,1100);
-      // gesture(600,[540,1700],[628,600],[628,20]);
         var dom_task_bounds = text('首页').findOne().bounds();
         click(dom_task_bounds.centerX(),dom_task_bounds.centerY());
         sleep(500);
