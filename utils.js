@@ -168,6 +168,15 @@ util.swapeToRead = function() {
     sleep(sleeptime);
 }
 
+//点击底部Tab页切换:0,1,2,3,4
+//totalCount：底部Tab的个数。index:需要点击的tab下标
+util.clickBottomTab = function(totalCount,index){
+    toast('点击底部tab '+index);
+    var itemWidth = utils.width / totalCount;//一个tab的宽度
+    click(itemWidth * index + itemWidth/2,utils.height - 20);
+    sleep(3000);
+},
+
 //以下方法，root权限才可用
 util.tap = function (x, y) {
     var ra = new RootAutomator();
