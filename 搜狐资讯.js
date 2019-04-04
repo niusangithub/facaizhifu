@@ -197,7 +197,7 @@ var souhu ={
         var dom_task = text('首页').findOnce().bounds();
         click(dom_task.centerX(),dom_task.centerY());    
         sleep(1000);
-        for(var i=0;i<300;i++){
+        while(true){
             this.lookOneArticle();
             swipe(Common.width / 2, Common.height / 6 * 5, Common.width / 2, 800, 600);    
         }
