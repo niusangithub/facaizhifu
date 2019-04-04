@@ -135,10 +135,10 @@ var MyThread = {
     startOne:function(callback){
         this.childThread = threads.start(function(){
             //在子线程执行的定时器
-            setTimeout(function(){
+            // setTimeout(function(){
                 toast('子线程中启动：'+threads.currentThread());
                 callback();
-            }, 1000);
+            // }, 1000);
         });
         this.childThread.waitFor();
     },
@@ -211,64 +211,18 @@ var shuabao = {
     }
 };
 
-
-/* 此多线程方法为简陋版，后期更新 */
-var FnAction = {
-    fnArray:[],
-    minutes:[], //每个app运行的时间
-    addFn:function(fn,minute){
-        this.fnArray.push(fn);
-        this.minutes.push(minute||60);
-    },
-    executeFn:function(){
-        for(var i=0;i<this.fnArray.length-1;i++){
-            var cFn = this.fnArray[i];
-            var cMinute = this.minutes[i];
-            var cFn1 = this.fnArray[i+1];
-            var cMinute1 = this.minutes[i+1];
-            if(i==0){
-                MyThread.startOne(cFn);
-            }     
-            setTimeout(() => {
-                MyThread.disposeThread();
-                Common.closeApp();
-                MyThread.startOne(cFn1);                
-            }, 1000*60*cMinute);
-
-            //停止最后一个脚本
-            if(i==this.fnArray.length-1){
-                setTimeout(() => {
-                    MyThread.disposeThread();
-                    Common.closeApp();
-                }, 1000*60*cMinute1);
-            }    
-        }
-    }
-}
-
-// FnAction.addFn(shuabao.init.bind(shuabao));
-function fn1(){
-    toast('1');
-}
-
-function fn2(){
-    toast('2');
-}
-FnAction.addFn(fn1,1);
-FnAction.addFn(fn2,2);
-FnAction.executeFn();
-
+//多线程
 
 
 toast('主线程启动运行！！');
-// MyThread.startOne(shuabao.init.bind(shuabao)); //启动头条多多
+// MyThread.startOne(shuabao.init.bind(shuabao)); 
 // setTimeout(() => {
 //     //当前脚本运行60分钟
 //     MyThread.disposeThread();
 //     Common.closeApp();
 //     toast('停止运行头条多多');
 //     sleep(1000);
-//     MyThread.startOne(shuabao.init.bind(shuabao)); //启动刷宝app
+//     MyThread.startOne(shuabao.init.bind(shuabao)); 
 // }, 60*60*1000);
 
 // //两个小时候，结束刷宝app

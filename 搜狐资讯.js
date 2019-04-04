@@ -132,25 +132,37 @@ var Common = {
 };
 
 var souhu ={
-    packageName:'刷宝',
+    packageName:'搜狐资讯',
     init:function(){
+        toast('启动搜狐资讯app');
+        var isHasApp = Common.startAPP(this.packageName);
+        if(!isHasApp)return;     
+        sleep(15000);//等待15s
         this.todotask();    
         this.lookArticle();
     },
     //todotask
     todotask:function(){
-        toast(1);
-        // var dom_task = text('任务').findOnce().bounds();
-        // click(dom_task.centerX(),dom_task.centerY());
+        toast('打开：任务页面');
+        var dom_task = text('任务').findOnce().bounds();
+        click(dom_task.centerX(),dom_task.centerY());
         //1、签到
-        //sleep(1000);
-        // var dom_sign = id('iv_sign').findOnce().bounds();
-        // click(dom_sign.centerX(),dom_sign.centerY());
-        // sleep(600);
-        //Common.findDomById('redbag_btn_close').click();      
-        
-        
-
+        sleep(1000);
+        //弹窗1
+        var dom_sign = Common.findDomById('iv_sign');
+        if(dom_sign){
+            dom_sign = id('iv_sign').findOnce().bounds();
+            click(dom_sign.centerX(),dom_sign.centerY());
+            sleep(1000);
+            Common.findDomById('redbag_btn_close').click();      
+        }
+        sleep(1000);
+        //弹窗2
+        var dom_act_close_image = Common.findDomById('act_close_image');
+        if(dom_act_close_image){
+          dom_act_close_image.click();
+        }
+        sleep(2000);
     },
     lookOneArticle:function(){
         //检测是否有能量红包
@@ -160,7 +172,7 @@ var souhu ={
             sleep(1000);
             Common.findDomById('btn_receive').click();
         }
-        sleep(1000);
+        sleep(1500);
         var dom_adv = Common.findDomInsideByText('广告',0,106,1080,1208);    
         if(!dom_adv){
             //不是广告位
@@ -182,17 +194,14 @@ var souhu ={
     },
     //看文章
     lookArticle:function(){
-
-        // var dom_task = text('首页').findOnce().bounds();
-        // click(dom_task.centerX(),dom_task.centerY());    
-        // sleep(1000);
+        var dom_task = text('首页').findOnce().bounds();
+        click(dom_task.centerX(),dom_task.centerY());    
+        sleep(1000);
         for(var i=0;i<300;i++){
             this.lookOneArticle();
             swipe(Common.width / 2, Common.height / 6 * 5, Common.width / 2, 800, 600);    
         }
     }
-
-
 };
 
 souhu.init();
