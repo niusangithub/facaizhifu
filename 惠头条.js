@@ -31,9 +31,9 @@ var huitoutiao = {
             sleep(500);
             var result = utils.clickById('btn_take');
             if(!result){//没有可点击的了
-                break;
+                return;
             }
-            sleep(1000);
+            sleep(500);
         }
     },
 
