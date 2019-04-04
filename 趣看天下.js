@@ -135,11 +135,11 @@ var qukantianxia ={
     packageName:'趣看天下',
     init:function(){
         toast('启动趣看天下app');
-        // var isHasApp = Common.startAPP(this.packageName);
-        // if(!isHasApp)return;     
-        // sleep(15000);//等待15s
-        //this.close_indexBox();
-        // this.todotask();    
+        var isHasApp = Common.startAPP(this.packageName);
+        if(!isHasApp)return;     
+        sleep(15000);//等待15s
+        this.close_indexBox();
+        this.todotask();    
         this.lookArticle();
     },
     //关闭首页弹窗

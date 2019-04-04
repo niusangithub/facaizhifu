@@ -133,13 +133,13 @@ var Common = {
     
 };
 //红包视频
-var shuabao = {
+var hongbao = {
     packageName:'红包视频',
     init:function(){
         toast('启动红包视频app');
-        // var isHasApp = Common.startAPP(this.packageName);
-        // if(!isHasApp)return;     
-        // sleep(20000);//等待20s
+        var isHasApp = Common.startAPP(this.packageName);
+        if(!isHasApp)return;     
+        sleep(20000);//等待20s
         this.lookVideo();
     },  
     lookVideo:function(){
@@ -154,4 +154,4 @@ var shuabao = {
         }
     }
 };
-shuabao.init();
+hongbao.init();
