@@ -10,21 +10,45 @@ var huitoutiao = {
         if(!isHasApp) return;
         sleep(2000);
         utils.clickById('img_close');//关闭广告弹窗
-        this.readFirstPage();
+        this.taskCenterPage();//1. 开局，任务中心撸一波
+        while(true){
+            this.readFirstPage();//2. 首页是主力，不能放过
+            this.taskCenterPage(); //3. 撸了那么久，任务中心领取奖励
+        }
     },
 
-    //阅读首页头条新闻
+    //1. 任务中心来一波
+    taskCenterPage:function(){
+        this.clickBottomTab(3); //点击底部tab
+        sleep(500);
+        var clickResult = utils.clickById('sign_step_entrance');//签到
+        if(clickResult){
+            sleep(1000);
+            back();
+        }
+
+        for(var count = 0;count <5;count++){//寻找"立即领取"按钮，并点击领取（有可能多个）
+            sleep(500);
+            var result = utils.clickById('btn_take');
+            if(!result){//没有可点击的了
+                break;
+            }
+            sleep(1000);
+        }
+    },
+
+    //2. 阅读首页头条新闻
     readFirstPage:function(){
         this.clickBottomTab(0); //点击底部tab
         sleep(2000);
         this.clickTimeGift(); //点击时段奖励
-        for(var count=0;count<5;count++){//循环阅读新闻
+        for(var count=0;count<2;count++){//阅读20条新闻
             toast('count = '+count);
             this.readNewsDetail();
             sleep(1000);
+            //滑动新闻列表
             swipe(device.width / 2, device.height * 0.8 ,
                 device.width / 2, device.height * 0.5, 2000);
-        
         }
     },
 
@@ -37,9 +61,10 @@ var huitoutiao = {
                 return;
             }
             sleep(2000);
+            var mr = utils.clickByContainsText('展开全文');
+            toast('展开全文 = '+mr);
             var repeatCount = random(4,8);
             for(var i=0;i<repeatCount;i++){
-                utils.clickByDesc('展开全文');
                 utils.swapeToRead();
             }
             back();

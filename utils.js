@@ -97,7 +97,18 @@ util.clickById = function(eleId){
 util.clickByText = function(txt){
     var isflag = false; //是否存在
     var dom = text(txt).find();
-    if(!dom.empty){
+    if(dom){
+        isflag = true;
+        dom.click();
+    }
+    sleep(1000);
+    return isflag;
+},
+//点击包含指定文本的控件
+util.clickByContainsText = function(txt){
+    var isflag = false; //是否存在
+    var dom = textContains(txt).find();
+    if(dom){
         isflag = true;
         dom.click();
     }
