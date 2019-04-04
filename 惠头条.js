@@ -16,22 +16,34 @@ var huitoutiao = {
     //阅读首页头条新闻
     readFirstPage:function(){
         this.clickBottomTab(0); //点击底部tab
+        sleep(2000);
         this.clickTimeGift(); //点击时段奖励
-        // while(5){
-            var newsItem = this.findNewsItem(); //找到非广告新闻
-            if(newsItem){//可读新闻
-                utils.boundsClick(newsItem);
-                sleep(2000);
+        for(var count=0;count<5;count++){//循环阅读新闻
+            toast('count = '+count);
+            this.readNewsDetail();
+            sleep(1000);
+            swipe(device.width / 2, device.height * 0.8 ,
+                device.width / 2, device.height * 0.5, 2000);
+        
+        }
+    },
 
-                utils.clickByDesc('展开全文');
-
-                var repeatCount = random(4,8);
-                for(var i=0;i<repeatCount;i++){
-                    utils.swapeToRead();
-                }
-                back();//退出阅读
+    //阅读新闻详情页
+    readNewsDetail:function(){
+        var newsItem = this.findNewsItem(); //找到非广告新闻
+        if(newsItem){//可读新闻
+            var result = utils.boundsClick(newsItem);
+            if(!result){
+                return;
             }
-        // }
+            sleep(2000);
+            var repeatCount = random(4,8);
+            for(var i=0;i<repeatCount;i++){
+                utils.clickByDesc('展开全文');
+                utils.swapeToRead();
+            }
+            back();
+        }
     },
 
     //找出新闻的条目
@@ -60,6 +72,7 @@ var huitoutiao = {
         var clickResult = utils.clickById('fl_reward')
         if(clickResult){
             sleep(5000)
+            utils.clickById('tv_left');//弹窗点击忽略
         }else{
             toast('右下角没有多余奖励')
         }
@@ -67,13 +80,11 @@ var huitoutiao = {
 
     //点击时段奖励
     clickTimeGift:function(){
-        var clickResult = utils.textBoundsClick('点击领取');
-        if(clickResult){
-            sleep(5000);
-            utils.clickById('tv_left');//弹窗点击忽略
-        }else{
-            toast('时段奖励时间未到');
-        }
+        click(utils.width - 50,100);
+        sleep(2000);
+        back();
+        sleep(1000);
+        return;
     },
 
     //点击"展开全文"

@@ -138,8 +138,13 @@ util.textBoundsClick = function(textContent) {
 //通过控件坐标点击
 util.boundsClick = function(item) {
     var bounds = item.bounds();
-    click(bounds.centerX(),bounds.centerY());
+    var flag = false;
+    if(bounds){
+        click(bounds.centerX(),bounds.centerY());
+        flag = true;
+    }
     sleep(1000);
+    return flag;
 }
 
 //滑动阅读新闻
