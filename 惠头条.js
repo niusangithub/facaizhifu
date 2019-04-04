@@ -1,6 +1,6 @@
 "auto";
 const utils = require('utils.js');
-
+//create by wangguagnbin
 var huitoutiao = {
     appName:'惠头条',
     appPackageName:'com.cashtoutiao',
@@ -14,12 +14,14 @@ var huitoutiao = {
         while(true){
             this.readFirstPage();//2. 首页是主力，不能放过
             this.taskCenterPage(); //3. 撸了那么久，任务中心领取奖励
+            utils.clickBottomTab(5,4); //进入我的页面，汇总收益
+            sleep(1000);
         }
     },
 
     //1. 任务中心来一波
     taskCenterPage:function(){
-        this.clickBottomTab(3); //点击底部tab
+        utils.clickBottomTab(5,3); //点击底部tab
         sleep(500);
         var clickResult = utils.clickById('sign_step_entrance');//签到
         if(clickResult){
@@ -39,7 +41,7 @@ var huitoutiao = {
 
     //2. 阅读首页头条新闻
     readFirstPage:function(){
-        this.clickBottomTab(0); //点击底部tab
+        utils.clickBottomTab(5,0); //点击底部tab
         sleep(2000);
         this.clickTimeGift(); //点击时段奖励
         for(var count=0;count<20;count++){//阅读20条新闻
@@ -82,14 +84,6 @@ var huitoutiao = {
             }
         }
         return newsItem;
-    },
-
-    //点击底部Tab页切换:0,1,2,3,4
-    clickBottomTab:function(index){
-        toast('点击底部tab '+index);
-        var itemWidth = utils.width / 5;//一个tab的宽度
-        click(itemWidth * index + itemWidth/2,utils.height - 20);
-        sleep(3000);
     },
 
     //点击右下角奖励

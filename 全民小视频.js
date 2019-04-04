@@ -1,6 +1,6 @@
 "auto";
 const utils = require('utils.js');
-
+//create by wangguagnbin
 //全民小视频，提现到百度钱包，太麻烦，先略过
 var quanminxiaoshipin = {
     appName:'全民小视频',
