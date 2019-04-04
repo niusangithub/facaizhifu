@@ -26,6 +26,12 @@ var huitoutiao = {
         var clickResult = utils.clickById('sign_step_entrance');//签到
         if(clickResult){
             sleep(1000);
+            var coinResult = utils.clickById('tv_receive');//领取金币
+            if(coinResult){
+                sleep(500);
+                back();
+                sleep(300);
+            }
             back();
         }
 
