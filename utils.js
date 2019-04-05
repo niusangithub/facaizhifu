@@ -2,16 +2,16 @@ var util = {
 
     init: function (isRoot) {
         auto();
-        var utils = {};
+        var utilsMap = {};
         toast('初始化');
         this.registerStopEvent();
         //add by wangguangbin，此文件可使用import方式导入使用
-        utils.width = device.width; //设备的宽
-        utils.height = device.height; //设备的高
+        utilsMap.width = device.width; //设备的宽
+        utilsMap.height = device.height; //设备的高
 
         console.show();
         //通过名字||包名，启动app
-        utils.startAPP = function (name) {
+        utilsMap.startAPP = function (name) {
             var isHasApp = launchApp(name);
             if (!isHasApp) {
                 toast('手机未安装：' + name);
@@ -27,7 +27,7 @@ var util = {
             return isHasApp;
         };
         //通过包名，关闭app
-        utils.closeApp = function (packageName) {
+        utilsMap.closeApp = function (packageName) {
             try {
                 packageName = packageName || currentPackage();
                 var result = app.openAppSetting(packageName);
@@ -47,7 +47,7 @@ var util = {
             }
         };
         //通过id，查找dom
-        utils.findDomById = function (idStr) {
+        utilsMap.findDomById = function (idStr) {
             var dom_txt = id(idStr).find();
             if (dom_txt.empty()) {
                 toast('没有找到：' + idStr);
@@ -58,7 +58,7 @@ var util = {
             }
         };
         //通过文本，查找dom
-        utils.findDomByText = function (txt) {
+        utilsMap.findDomByText = function (txt) {
             var dom_txt = text(txt).find();
             if (dom_txt.empty()) {
                 toast('没有找到：' + txt);
@@ -69,7 +69,7 @@ var util = {
             }
         };
         //通过描述desc，查找dom
-        utils.findDomByDesc = function (txt) {
+        utilsMap.findDomByDesc = function (txt) {
             var dom_txt = desc(txt).find();
             if (dom_txt.empty()) {
                 toast('没有找到：' + txt);
@@ -80,7 +80,7 @@ var util = {
             }
         };
         //在某个范围内通过text寻找控件
-        utils.findDomInsideByText = function (txt, x, y, x1, y1) {
+        utilsMap.findDomInsideByText = function (txt, x, y, x1, y1) {
             var dom_txt = text(txt).boundsInside(x, y, x1, y1).find();
             if (dom_txt.empty()) {
                 toast('没有找到：' + txt);
@@ -91,7 +91,7 @@ var util = {
             }
         };
         //通过id，点击控件
-        utils.clickById = function (eleId) {
+        utilsMap.clickById = function (eleId) {
             var isflag = false; //是否存在
             var dom = id(eleId).find();
             if (dom) {
@@ -104,7 +104,7 @@ var util = {
             return isflag;
         };
         //通过text，点击控件
-        utils.clickByText = function (txt) {
+        utilsMap.clickByText = function (txt) {
             var isflag = false; //是否存在
             var dom = text(txt).find();
             if (!dom.empty()) {
@@ -117,7 +117,7 @@ var util = {
             return isflag;
         };
         //点击包含指定文本的控件
-        utils.clickByContainsText = function (txt) {
+        utilsMap.clickByContainsText = function (txt) {
             var isflag = false; //是否存在
             var dom = textContains(txt).find();
             if (!dom.empty()) {
@@ -130,7 +130,7 @@ var util = {
             return isflag;
         };
         //通过desc，点击控件
-        utils.clickByDesc = function (txt) {
+        utilsMap.clickByDesc = function (txt) {
             var isflag = false; //是否存在
             var dom = desc(txt).find();
             if (!dom.empty()) {
@@ -143,18 +143,18 @@ var util = {
         };
 
         //双击点赞
-        utils.doubleClick = function (x, y) {
+        utilsMap.doubleClick = function (x, y) {
             click(x, y);
             sleep(100)
             click(x, y);
         };
 
         //通过UI文本的坐标点击，并返回是否成功
-        utils.textBoundsClick = function (textContent) {
+        utilsMap.textBoundsClick = function (textContent) {
             var thisEle = text(textContent).find();
             var flag = false;
             if (!thisEle.empty) {
-                utils.boundsClick(thisEle);
+                utilsMap.boundsClick(thisEle);
                 flag = true;
             }
             sleep(1000);
@@ -162,7 +162,7 @@ var util = {
         };
 
         //通过控件坐标点击
-        utils.boundsClick = function (item) {
+        utilsMap.boundsClick = function (item) {
             var bounds = item.bounds();
             var flag = false;
             if (bounds) {
@@ -175,18 +175,18 @@ var util = {
         /**
          * 滑动事件
          */
-        utils.swipe = function (x, y, x1, y1, time) {
+        utilsMap.swipe = function (x, y, x1, y1, time) {
             if (isRoot) {
-                utils.rootSwipe(x, y, x1, y1, time);
+                utilsMap.rootSwipe(x, y, x1, y1, time);
             } else {
-                utils.swipe(x, y, x1, y1, time);
+                utilsMap.swipe(x, y, x1, y1, time);
             }
         };
 
         //滑动阅读新闻
-        utils.swapeToRead = function () {
+        utilsMap.swapeToRead = function () {
             if (isRoot) {
-                utils.rootSwapeToRead();
+                utilsMap.rootSwapeToRead();
             } else {
                 var swapetime = random(2000, 6000);
                 swipe(device.width / 2, device.height * 0.8,
@@ -200,16 +200,16 @@ var util = {
 
         //点击底部Tab页切换:0,1,2,3,4
         //totalCount：底部Tab的个数。index:需要点击的tab下标
-        utils.clickBottomTab = function (totalCount, index) {
+        utilsMap.clickBottomTab = function (totalCount, index) {
             toast('点击底部tab ' + index);
-            var itemWidth = utils.width / totalCount; //一个tab的宽度
-            click(itemWidth * index + itemWidth / 2, utils.height - 20);
+            var itemWidth = utilsMap.width / totalCount; //一个tab的宽度
+            click(itemWidth * index + itemWidth / 2, utilsMap.height - 20);
             sleep(3000);
         };
         /**
          * root账户滑动
          */
-        utils.rootSwipe = function (x, y, x1, y1, time) {
+        utilsMap.rootSwipe = function (x, y, x1, y1, time) {
             var ra = new RootAutomator();
             ra.swipe(x, y, x1, y1, time);
             ra.exit();
@@ -217,7 +217,7 @@ var util = {
         /**
          * root账户点击
          */
-        utils.rootClick = function (x, y) {
+        utilsMap.rootClick = function (x, y) {
             var ra = new RootAutomator();
             ra.press(x, y, 1);
             ra.exit();
@@ -225,7 +225,7 @@ var util = {
 
 
         //滑动阅读新闻
-        utils.rootSwapeToRead = function () {
+        utilsMap.rootSwapeToRead = function () {
             var ra = new RootAutomator();
             //滑动阅读新闻
             ra.swipe(device.width / 2, device.height * 0.8,
@@ -238,11 +238,11 @@ var util = {
         /**
          * 返回界面
          */
-        utils.back = function () {
+        utilsMap.back = function () {
             back();
             sleep(1000);
         };
-        return utils;
+        return utilsMap;
 
     },
 
@@ -279,4 +279,4 @@ var util = {
 };
 
 
-module.exports = util.init();
+module.exports = util;
