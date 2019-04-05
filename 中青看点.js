@@ -108,6 +108,8 @@ var zhognqing = {
         sleep(500);
         utils.clickByText('稍后回来');
         sleep(500);
+        utils.clickById('tv_exit');
+        sleep(500);
     },
 
     //找出新闻的条目
