@@ -1,6 +1,5 @@
-auto();
-const utils = require('Utils.js');
-
+const utils = require('./utils');
+const autoUtils = utils.init();
 
 //百度知道
 var yuetoutiao = {
@@ -26,14 +25,14 @@ var yuetoutiao = {
         //layout_invite   layout_video  layout_news llSiginin(签到)  ivClose(关闭弹出窗)
         //layout_item_second_news(新闻item)   iv_bouy 
         //切换到任务tab
-        utils.click("layout_invite");
+        autoUtils.clickById("layout_invite");
         sleep(5000); //等待15s
         //点击签到
-        utils.click("llSiginin");
+        autoUtils.clickById("llSiginin");
         //关闭弹窗
-        utils.click("ivClose");
+        autoUtils.clickById("ivClose");
         //切换到头条
-        utils.click("layout_news");
+        autoUtils.clickById("layout_news");
         this.exec();
 
     },
@@ -49,7 +48,7 @@ var yuetoutiao = {
             console.log("当前剩余个数=", this.newsList.length);
             if (this.newsList.length <= 0) {
                 if (!this.isfirst) {
-                    utils.swipe();
+                    autoUtils.swipe(autoUtils.width / 2, autoUtils.height * 0.8, autoUtils.width / 2, autoUtils.height / 8 * 0.4, 1000);
                 }
                 flag = this.getNewsDom();
                 this.isfirst = false;
@@ -188,160 +187,15 @@ var yuetoutiao = {
 };
 
 
-console.show();
+
 var AppName = "悦头条";
-var thread = null;
 var init = function () {
-    utils.wakeUp();
     toast(AppName);
-    utils.launch(AppName);
-    events.observeKey();
-    events.on("key_down", function (keyCode, event) {
-        toast("菜单键按下" + keyCode);
-        //处理按键按下事件
-        if (keyCode == keys.back || keyCode == keys.menu || keyCode == keys.home) {
-            toast("菜单键按下");
-            exit();
-            thread.interrupt();
-            threads.shutDownAll();
-        }
-    });
-    events.onKeyDown("volume_up", function (event) {
-        toast("音量上键被按下了");
-        exit();
-        thread.interrupt();
-        threads.shutDownAll();
-    });
-    //监听菜单键按下
-    events.onKeyDown("menu", function (event) {
-        toast("菜单键被按下了");
-        exit();
-        thread.interrupt();
-        threads.shutDownAll();
-
-    });
-
-    //启用触摸监听
-    events.observeTouch();
-    //注册触摸监听器
-    events.onTouch(function (p) {
-        toast("停止事件");
-        exit();
-        thread.interrupt();
-        threads.shutDownAll();
-    });
-    thread = threads.start(function () {
-        console.log("初始化");
+    var isHasApp = autoUtils.startAPP(AppName);
+    if (!isHasApp) return;
+    sleep(5000); //等待15s
+    threads.start(function () {
         yuetoutiao.init();
-
     });
 }
 init();
-
-
-
-/**
- * 全局参数
- */
-// var lastNewsText = ""; //上一次新闻标题
-// var totalNewsReaded = 0; //已经阅读的新闻条数
-// var totalNewsOneTime = 50; //一次性阅读多少条新闻
-// var loopTimeToFindNews = 20; //找了多少次新闻找不到会退出
-// var indexFlagText = "刷新"; //首页特有的标志文字
-
-// /**
-//  * 主循环
-//  */
-// utils.wakeUp();
-// utils.launch("悦头条");
-// jumpToIndex();
-// signIn();
-// while (true) {
-//     //领取时段奖励
-//     getAward();
-//     //找到一条新闻
-//     getOneNews();
-//     //阅读新闻60s
-//     readNews(30);
-//     //返回新闻列表
-//     utils.backToIndex(indexFlagText);
-// }
-
-// //跳转到首页
-// jumpToIndex: function () {
-
-//     //循环关闭所有的弹出框
-//     var flag = text(indexFlagText).findOnce();
-//     while (!flag) {
-
-//         //领取奖励
-//         utils.UIClick("ll_quit");
-
-//         sleep(1000);
-//         flag = text(indexFlagText).findOnce();
-//     }
-// }
-
-
-// //领取时段奖励
-// function getAward() {}
-
-// // 获取一条新闻
-// function getOneNews() {
-
-//     //阅读超过50条，刷新页面
-//     if (totalNewsReaded > totalNewsOneTime) {
-//         totalNews = 0;
-//         click(1, 1919);
-//         sleep(2000);
-//     }
-
-//     //上滑找新闻
-//     var isFindNews = false; //是否找到新闻
-//     var newsText = ""; //新闻标题
-//     var newsItem; //新闻条目
-//     loopTimeToFindNews = 0; //循环次数
-//     while ((!isFindNews || lastNewsText === newsText) && loopTimeToFindNews < 20) {
-//         //找新闻次数+1
-//         loopTimeToFindNews++;
-
-//         //进行下翻
-//         swipe(device.width / 2, device.height / 4 * 2, device.width / 2, device.height / 4, 1000);
-//         sleep(1000);
-
-//         //新闻条目
-//         newsItem = className("android.support.v4.view.ViewPager")
-//             .className("android.support.v7.widget.RecyclerView")
-//             .className("LinearLayout").findOnce();
-//         if (newsItem) {
-//             //判断是不是广告,通过是否有阅读数量判断
-//             var adFlag = newsItem.child(1);
-//             if (adFlag && adFlag.text() == "【广告】") {
-//                 newsItem = null;
-//             } else {
-//                 newsText = newsItem.child(0).text();
-//                 isFindNews = true;
-//             }
-//         }
-//     }
-
-//     //找到新闻，点击阅读
-//     if (isFindNews) {
-//         lastNewsText = newsText;
-//         totalNewsReaded++;
-//         newsItem.click();
-//     } else {
-//         toast("20次滑动没有找到新闻，请检查新闻ID");
-//         exit();
-//     }
-// }
-
-// //阅读新闻
-// function readNews(seconds) {
-
-//     //滑动阅读新闻
-//     for (var i = 0; i < seconds / 10; i++) {
-//         utils.swapeToRead();
-//     }
-
-// }
