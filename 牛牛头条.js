@@ -1,3 +1,4 @@
+"auto";
 var Common = {
     width: device.width, //设备的宽
     height: device.height, //设备的高
@@ -147,4 +148,65 @@ var Common = {
     },
 
 };
+var niuniutoutiao ={
+    packageName:'牛牛头条',
+    init:function(){
+        toast('启动牛牛头条app');
+        // var isHasApp = Common.startAPP(this.packageName);
+        // if(!isHasApp)return;     
+        // sleep(15000);//等待15s        
+        //this.todotask();    
+        this.lookArticle();
+    },
+   
+    //todotask
+    todotask:function(){
+       toast('打开：每日金币页面');                                                                
+       var dom_task = text('每日金币').findOnce().bounds();
+       click(dom_task.centerX(),dom_task.centerY());    
+       sleep(1000);
+        //签到  
 
+    },
+    lookOneArticle:function(){
+        //上次看到这里
+        var dom_last = Common.findDomById('id_item_news_list_last_refresh');
+        sleep(1000);
+        var dom_adv = Common.findDomInsideByText('广告',0,106,1080,1008);    
+        if(!dom_adv&&!dom_last){
+            //不是广告位
+            click(Common.width/2,370);
+            sleep(1200);//等待文章加载
+            for(var i=0;i<12;i++){                
+                var scrollHeight = random(800,1400);//滑动的距离
+                var sleepTime = random(600,1000);//睡眠时长   
+                var isLookAll = Common.clickByContainsText('展开全文');
+                if(isLookAll){
+                    sleep(1000);
+                }   
+                //查看是否有弹窗
+                var dom_id_dialog_coins_num = Common.findDomById('id_dialog_coins_num');
+                if(dom_id_dialog_coins_num){
+                    sleep(3000);
+                }                
+                swipe(Common.width / 2, Common.height / 6 * 5, Common.width / 2, scrollHeight, 600);    
+                sleep(sleepTime);
+            }          
+            back();
+        }
+        sleep(1000);
+    },
+    //看文章
+    lookArticle:function(){
+        var dom_task = text('资讯').findOnce().bounds();
+        click(dom_task.centerX(),dom_task.centerY());    
+        sleep(2000);    
+
+        while(true){
+            this.lookOneArticle();
+            swipe(Common.width / 2, Common.height / 6 * 5, Common.width / 2, 1000, 600);    
+        }
+    }
+};
+
+niuniutoutiao.init();
