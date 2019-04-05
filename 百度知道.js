@@ -1,82 +1,5 @@
-"auto";
-var Common = {
-    width: device.width, //设备的宽
-    height: device.height, //设备的高
-    startAPP: function (appName) {
-        var isHasApp = launchApp(appName);
-        if (!isHasApp) {
-            toast('手机未安装：' + appName);
-        } else {
-            sleep(5000); //停顿5s
-            var dom_allow = text('允许').find();
-            if (!dom_allow.empty()) {
-                toast('找到了');
-                dom_allow.click();
-            } else {
-                toast('没找到');
-            }
-        }
-        return isHasApp;
-    },
-    closeApp: function () {
-        for (var i = 0; i < 4; i++) {
-            back();
-            sleep(200);
-        }
-        sleep(1000);
-        click(120, 1300);
-    },
-    findDomById: function (idStr) {
-        var dom_txt = id(idStr).find();
-        if (dom_txt.empty()) {
-            toast('没有找到：' + idStr);
-            return null;
-        } else {
-            toast('找到了：' + idStr);
-            return dom_txt;
-        }
-    },
-
-    click: function (id) {
-        var clickDom = Common.findDomById(id);
-        if (clickDom) {
-            clickDom.click();
-            sleep(500);
-        }
-    },
-    tap: function (x, y) {
-        var ra = new RootAutomator();
-        //让"手指1"点击位置(100, 100)
-        toast("点击");
-        ra.press(x, y, 1);
-        ra.exit();
-    },
-    findDomByText: function (txt) {
-        var dom_txt = text(txt).find();
-        if (dom_txt.empty()) {
-            toast('没有找到：' + txt);
-            return null;
-        } else {
-            toast('找到了：' + txt);
-            return dom_txt;
-        }
-    },
-    findDomInsideByText: function (txt, x, y, x1, y1) {
-        var dom_txt = text(txt).boundsInside(x, y, x1, y1).find();
-        if (dom_txt.empty()) {
-            toast('没有找到：' + txt);
-            return null;
-        } else {
-            toast('找到了：' + txt);
-            return dom_txt;
-        }
-    },
-    swipe: function () {
-        var ra = new RootAutomator();
-        ra.swipe(Common.width / 2, Common.height * 0.8, Common.width / 2, Common.height / 8 * 0.4, 1000);
-        ra.exit();
-    }
-};
+const utils = require('./utils');
+const autoUtils = utils.init();
 
 //百度知道
 var baiduzhidao = {
@@ -98,15 +21,15 @@ var baiduzhidao = {
     todoTask: function () {
 
         sleep(1000);
-        Common.click("close_iv");
+        autoUtils.clickById("close_iv");
         // Common.click("open_red_package_iv");
         // //关闭弹窗
-        Common.click("close_button");
+        autoUtils.clickById("close_button");
         //切换到任务页
-        Common.click("answer_tab");
+        autoUtils.clickById("answer_tab");
         sleep(1500);
         //切换到首页
-        Common.click("home_tab");
+        autoUtils.clickById("home_tab");
         //切换到视频tab
         var videoTab = id("activity_home_container_tb_rl").findOne().child(0).child(0);
         videoTab.child(2).click();
@@ -126,7 +49,7 @@ var baiduzhidao = {
         if (this.videoList.length <= 0) {
             if (!this.isfirst) {
                 console.log("滑动=", 1);
-                Common.swipe();
+                autoUtils.swipe(autoUtils.width / 2, autoUtils.height * 0.8, autoUtils.width / 2, autoUtils.height / 8 * 0.4, 1000);
             }
             flag = this.getVideoDom();
             this.isfirst = false;
@@ -140,7 +63,7 @@ var baiduzhidao = {
                 curChild.child.click();
                 var timeout = setTimeout(function () {
                     //这里的语句会在15秒后执行而不是5秒后
-                    Common.click("rl_back");
+                    autoUtils.clickById("rl_back");
                     clearTimeout(timeout);
                     this.exec();
                 }.bind(this), curChild.timeNumber + sleepCount);
@@ -211,41 +134,13 @@ var baiduzhidao = {
 
 };
 
-console.show();
 var init = function () {
     toast('百度知道');
-    var isHasApp = Common.startAPP('百度知道');
+    var isHasApp = autoUtils.startAPP('百度知道');
     if (!isHasApp) return;
     sleep(5000); //等待15s
-    events.observeKey();
-    events.on("key_down", function (keyCode, event) {
-        toast("菜单键按下" + keyCode);
-        //处理按键按下事件
-        if (keyCode == keys.back || keyCode == keys.menu || keyCode == keys.home) {
-            toast("菜单键按下");
-            exit();
-        }
-    });
-    events.onKeyDown("volume_up", function (event) {
-        toast("音量上键被按下了");
-        exit();
-    });
-    //监听菜单键按下
-    events.onKeyDown("menu", function (event) {
-        toast("菜单键被按下了");
-        exit();
-    });
-
-    //启用触摸监听
-    events.observeTouch();
-    //注册触摸监听器
-    events.onTouch(function (p) {
-        toast("停止事件");
-        exit();
-    });
     threads.start(function () {
         baiduzhidao.init();
-
     });
 }
 init();
