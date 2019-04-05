@@ -2,7 +2,7 @@
  * @Author: mikey.quanyj 
  * @Date: 2019-04-05 17:42:49 
  * @Last Modified by: mikey.quanyj
- * @Last Modified time: 2019-04-05 20:22:34
+ * @Last Modified time: 2019-04-05 21:28:17
  * 
  * 脚本运行期间请勿用手触摸
  */
@@ -45,6 +45,9 @@ function init() {
  * 结束运行app
  */
 function destory() {
+    if (thread) {
+        thread.interrupt();
+    }
     thread = null;
     back();
     sleep(2000);
@@ -130,23 +133,17 @@ function registerStopEvent() {
         //处理按键按下事件
         if (keyCode == keys.back || keyCode == keys.menu || keyCode == keys.home) {
             toast("菜单键按下");
-            exit();
-            engines.stopAll();
-            threads.shutDownAll();
+            destory();
         }
     });
     events.onKeyDown("volume_up", function (event) {
         toast("音量上键被按下了");
-        exit();
-        engines.stopAll();
-        threads.shutDownAll();
+        destory();
     });
     //监听菜单键按下
     events.onKeyDown("menu", function (event) {
         toast("菜单键被按下了");
-        exit();
-        engines.stopAll();
-        threads.shutDownAll();
+        destory();
     });
 
     //启用触摸监听
@@ -154,13 +151,10 @@ function registerStopEvent() {
     //注册触摸监听器
     events.onTouch(function (p) {
         toast("停止事件");
-        exit();
-        engines.stopAll();
-        threads.shutDownAll();
+        destory();
     });
 }
 
 auto();
 console.show();
-console.log("init==")
 init();
