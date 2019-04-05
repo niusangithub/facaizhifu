@@ -1,5 +1,5 @@
-"auto";
-const utils = require('utils.js');
+const autoUtils = require('./utils');
+const utils = autoUtils.init();
 //create by wangguagnbin
 var huitoutiao = {
     appName:'惠头条',
@@ -8,7 +8,6 @@ var huitoutiao = {
         toast(this.appName);
         var isHasApp = utils.startAPP(this.appName);
         if(!isHasApp) return;
-        sleep(2000);
         utils.clickById('img_close');//关闭广告弹窗
         this.taskCenterPage();//1. 开局，任务中心撸一波
         while(true){
@@ -48,8 +47,8 @@ var huitoutiao = {
     //2. 阅读首页头条新闻
     readFirstPage:function(){
         utils.clickBottomTab(5,0); //点击底部tab
-        sleep(2000);
         this.clickTimeGift(); //点击时段奖励
+        this.clickJiangli();//点击右下角奖励
         for(var count=0;count<20;count++){//阅读20条新闻
             toast('count = '+count);
             this.readNewsDetail();
@@ -96,8 +95,9 @@ var huitoutiao = {
     clickJiangli:function(){
         var clickResult = utils.clickById('fl_reward')
         if(clickResult){
-            sleep(5000)
+            sleep(2000);
             utils.clickById('tv_left');//弹窗点击忽略
+            sleep(1000);
         }else{
             toast('右下角没有多余奖励')
         }
