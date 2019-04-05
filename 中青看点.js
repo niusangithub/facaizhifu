@@ -119,5 +119,4 @@ var zhognqing = {
     },
 }
 
-console.show();
 zhognqing.init();

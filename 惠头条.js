@@ -8,7 +8,6 @@ var huitoutiao = {
         toast(this.appName);
         var isHasApp = utils.startAPP(this.appName);
         if(!isHasApp) return;
-        sleep(4000);
         utils.clickById('img_close');//关闭广告弹窗
         this.taskCenterPage();//1. 开局，任务中心撸一波
         while(true){
