@@ -139,8 +139,6 @@ var init = function () {
     var isHasApp = autoUtils.startAPP('百度知道');
     if (!isHasApp) return;
     sleep(5000); //等待15s
-    threads.start(function () {
-        baiduzhidao.init();
-    });
+    baiduzhidao.init();
 }
 init();

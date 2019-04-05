@@ -1,15 +1,17 @@
-var util = {
+/*
+ * @Author: mikey.quanyj 
+ * @Date: 2019-04-05 17:42:41 
+ * @Last Modified by: mikey.quanyj
+ * @Last Modified time: 2019-04-05 20:03:28
+ */
 
+var util = {
     init: function (isRoot) {
-        auto();
         var utilsMap = {};
         toast('初始化');
-        this.registerStopEvent();
         //add by wangguangbin，此文件可使用import方式导入使用
         utilsMap.width = device.width; //设备的宽
         utilsMap.height = device.height; //设备的高
-
-        console.show();
         //通过名字||包名，启动app
         utilsMap.startAPP = function (name) {
             var isHasApp = launchApp(name);
@@ -245,37 +247,6 @@ var util = {
         return utilsMap;
 
     },
-
-    registerStopEvent: function () {
-        events.observeKey();
-        events.on("key_down", function (keyCode, event) {
-            toast("菜单键按下" + keyCode);
-            //处理按键按下事件
-            if (keyCode == keys.back || keyCode == keys.menu || keyCode == keys.home) {
-                toast("菜单键按下");
-                exit();
-            }
-        });
-        events.onKeyDown("volume_up", function (event) {
-            toast("音量上键被按下了");
-            exit();
-        });
-        //监听菜单键按下
-        events.onKeyDown("menu", function (event) {
-            toast("菜单键被按下了");
-            exit();
-        });
-
-        //启用触摸监听
-        events.observeTouch();
-        //注册触摸监听器
-        events.onTouch(function (p) {
-            toast("停止事件");
-            exit();
-        });
-    }
-
-
 };
 
 
