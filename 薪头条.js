@@ -34,6 +34,16 @@ var zhognqing = {
 
         // for(var count=0;count<6;count++){//阅读20条新闻
         while(true){
+
+            var randomvalue = random(100,200);//4的倍数时检查右上角是否可领取金币
+            toast('随机数 = '+randomvalue);
+            if(randomvalue / 5 == 0){
+                utils.clickById('id_fragment_information_datecoins_layout');//点击右上角领取金币
+                sleep(1000);
+                back();
+                sleep(500);
+            }
+
             this.readNewsDetail();
             sleep(500);
             //滑动新闻列表
