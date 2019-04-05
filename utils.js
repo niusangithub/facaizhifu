@@ -180,7 +180,7 @@ util.swapeToRead = function() {
 util.clickBottomTab = function(totalCount,index){
     toast('点击底部tab '+index);
     var itemWidth = utils.width / totalCount;//一个tab的宽度
-    click(itemWidth * index + itemWidth/2,utils.height - 20);
+    click(itemWidth * index + itemWidth/2,utils.height - 40);
     sleep(3000);
 },
 

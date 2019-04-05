@@ -48,7 +48,6 @@ var huitoutiao = {
     //2. 阅读首页头条新闻
     readFirstPage:function(){
         utils.clickBottomTab(5,0); //点击底部tab
-        sleep(2000);
         this.clickTimeGift(); //点击时段奖励
         for(var count=0;count<20;count++){//阅读20条新闻
             toast('count = '+count);
