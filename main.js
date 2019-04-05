@@ -2,7 +2,9 @@
  * @Author: mikey.quanyj 
  * @Date: 2019-04-05 17:42:49 
  * @Last Modified by: mikey.quanyj
- * @Last Modified time: 2019-04-05 20:03:12
+ * @Last Modified time: 2019-04-05 20:22:34
+ * 
+ * 脚本运行期间请勿用手触摸
  */
 
 const autoConfig = require('./config');
@@ -24,17 +26,34 @@ function init() {
         console.log("result线程==", threads.currentThread());
         stopCurrent();
         thread.interrupt();
+        console.log("子线程是否存活", thread.isAlive());
+        thread = null;
         let nextIndex = result.index + 1;
         console.log("index===", nextIndex);
         if (newsList[nextIndex]) {
             startNewApp(nextIndex);
         } else {
             console.log("结束");
+            destory();
         }
 
     });
     startNewApp(0);
 
+}
+/**
+ * 结束运行app
+ */
+function destory() {
+    thread = null;
+    back();
+    sleep(2000);
+    back();
+    sleep(2000);
+    exit();
+    engines.stopAll();
+    threads.shutDownAll();
+    console.log("当前运行的脚本==", engines.all());
 }
 
 function startNewApp(index) {
