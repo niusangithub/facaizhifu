@@ -152,10 +152,10 @@ var niuniutoutiao ={
     packageName:'牛牛头条',
     init:function(){
         toast('启动牛牛头条app');
-        var isHasApp = Common.startAPP(this.packageName);
-        if(!isHasApp)return;     
-        sleep(15000);//等待15s        
-        this.todotask();    
+        // var isHasApp = Common.startAPP(this.packageName);
+        // if(!isHasApp)return;     
+        // sleep(15000);//等待15s        
+        //this.todotask();    
         this.lookArticle();
     },
    
@@ -200,7 +200,7 @@ var niuniutoutiao ={
     lookArticle:function(){
         var dom_task = text('资讯').findOnce().bounds();
         click(dom_task.centerX(),dom_task.centerY());    
-        sleep(2000);      
+        sleep(2000);    
 
         while(true){
             this.lookOneArticle();
