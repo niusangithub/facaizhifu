@@ -1,5 +1,5 @@
-"auto";
-const utils = require('utils.js');
+const autoUtils = require('./utils');
+const utils= autoUtils.init();
 //create by wangguagnbin
 
 var zhognqing = {
@@ -9,7 +9,6 @@ var zhognqing = {
         toast(this.appName);
         var isHasApp = utils.startAPP(this.appName);
         if(!isHasApp) return;
-        sleep(5000);
         // utils.clickById('iv_activity');//马上赚钱-马上领取
         utils.clickById('button2');//关闭评论APP弹窗
         sleep(1000);

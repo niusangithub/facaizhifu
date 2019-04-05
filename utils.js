@@ -18,7 +18,7 @@ var util = {
             } else {
                 //设置屏幕缩放
                 setScreenMetrics(1080, 1920);
-                sleep(5000); //停顿5s
+                sleep(15000); //停顿5s
                 var dom_allow = this.findDomByText('允许');
                 if (dom_allow) {
                     dom_allow.click();
