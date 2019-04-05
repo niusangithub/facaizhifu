@@ -87,20 +87,24 @@ util.clickById = function(eleId){
     var isflag = false; //是否存在
     var dom = id(eleId).find();
     if(dom){
+        console.log(dom);
         isflag = true;
         dom.click();
         sleep(1000);
     }
+    console.log(isflag);
     return isflag;
 },
 //通过text，点击控件
 util.clickByText = function(txt){
     var isflag = false; //是否存在
     var dom = text(txt).find();
-    if(dom){
+    if(!dom.empty()){
+        console.log(dom);
         isflag = true;
         dom.click();
     }
+    console.log(isflag);
     sleep(1000);
     return isflag;
 },
@@ -108,10 +112,12 @@ util.clickByText = function(txt){
 util.clickByContainsText = function(txt){
     var isflag = false; //是否存在
     var dom = textContains(txt).find();
-    if(dom){
+    if(!dom.empty()){
+        console.log(dom);
         isflag = true;
         dom.click();
     }
+    console.log(isflag);
     sleep(1000);
     return isflag;
 },
@@ -119,7 +125,8 @@ util.clickByContainsText = function(txt){
 util.clickByDesc = function(txt){
     var isflag = false; //是否存在
     var dom = desc(txt).find();
-    if(dom){
+    if(!dom.empty()){
+        console.log(dom);
         isflag = true;
         dom.click();
     }
