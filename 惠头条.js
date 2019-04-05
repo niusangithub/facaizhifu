@@ -52,10 +52,11 @@ var huitoutiao = {
         for(var count=0;count<20;count++){//阅读20条新闻
             toast('count = '+count);
             this.readNewsDetail();
-            sleep(1000);
+            sleep(500);
             //滑动新闻列表
             swipe(device.width / 2, device.height * 0.8 ,
                 device.width / 2, device.height * 0.5, 2000);
+            sleep(500);
         }
     },
 

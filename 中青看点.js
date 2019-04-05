@@ -9,7 +9,6 @@ var zhognqing = {
         toast(this.appName);
         var isHasApp = utils.startAPP(this.appName);
         if(!isHasApp) return;
-        // utils.clickById('iv_activity');//马上赚钱-马上领取
         utils.clickById('button2');//关闭评论APP弹窗
         sleep(1000);
         utils.clickById('iv_close');//关闭广告弹窗
@@ -74,10 +73,11 @@ var zhognqing = {
         // for(var count=0;count<6;count++){//阅读20条新闻
         while(true){
             this.readNewsDetail();
-            sleep(1000);
+            sleep(500);
             //滑动新闻列表
             swipe(device.width / 2, device.height * 0.8 ,
                 device.width / 2, device.height * 0.5, 2000);
+            sleep(500);
         }
     },
     //阅读新闻详情页
