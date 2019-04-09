@@ -107,6 +107,7 @@ var UIAutomator ={
         var filepath = 'config.js';
         var txt = '';
         txt+='var config = { \n';
+        txt+='videoAppList:[],\n';
         txt+='newsAppList: [ \n';
         for(var i=0;i<that.newList.length;i++){
             var cItem = that.newList[i];
@@ -118,7 +119,8 @@ var UIAutomator ={
                 txt+=', \n';
             }
         }
-        txt+='] }';
+        txt+='] }\n\n';
+        txt+='module.exports = config;';
         files.write(filepath, txt);
         toast('更新成功配置；');
        
