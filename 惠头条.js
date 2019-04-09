@@ -22,15 +22,10 @@ var huitoutiao = {
     taskCenterPage:function(){
         utils.clickBottomTab(5,3); //点击底部tab
         sleep(500);
-        var clickResult = utils.clickById('sign_step_entrance');//签到
+        var clickResult = utils.clickById('sign_btn_container');//签到
         if(clickResult){
+            // toast('签到成功 = '+clickResult);
             sleep(1000);
-            var coinResult = utils.clickById('tv_receive');//领取金币
-            if(coinResult){
-                sleep(500);
-                back();
-                sleep(300);
-            }
             back();
         }
 
