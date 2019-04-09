@@ -1,13 +1,18 @@
 "ui";
+importClass(android.widget.Button)
+importClass('android.view.WindowManager')
+importClass('android.view.Gravity')
+importClass('android.graphics.PixelFormat')
 
 //UI界面版，主程序
 ui.layout(
-    <scroll>
+    <scroll focusable="true"  focusableInTouchMode="true">     
     <vertical padding="20">
+          <linear orientation="vertical"></linear>
         <list id="app_list">
             <horizontal>
                 <checkbox checked="true" id="{{ck_id}}" text="{{name}}"/> 
-                <input autofocus="false" id="{{txt_id}}"  margin-left="10" inputType="number"  text="{{minutes}}"/><text text="分钟" />
+                <input  id="{{txt_id}}"  margin-left="10" inputType="number"  text="{{minutes}}"/><text text="分钟" />
             </horizontal>
         </list>
        
@@ -21,6 +26,8 @@ ui.layout(
     </vertical>
     </scroll>
 );
+
+activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 //随机打乱数组
 function randomsort(a, b) {
@@ -88,6 +95,10 @@ var UIAutomator ={
                 ui['ck_app'+i].checked = isChecked;
             } 
         });
+       
+        setTimeout(() => {
+            ui.txt_app0.click();
+        }, 2000);
 
     },
     //更新配置文件
