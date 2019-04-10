@@ -85,7 +85,8 @@ var zhognqing = {
         var newsItem = this.findNewsItem(); //找到非广告新闻
         if(newsItem){//可读新闻
             sleep(500);
-            var result = utils.boundsClick(newsItem);
+            var result = utils.boundsClick(newsItem.parent());
+            toast('找到可读新闻 = '+result);
             if(!result){
                 return;
             }
@@ -95,6 +96,10 @@ var zhognqing = {
             var repeatCount = random(3,6);
             for(var i=0;i<repeatCount;i++){
                 utils.swapeToRead();
+            }
+            var dialogDom = utils.findDomByText('要闻推荐')
+            if(dialogDom){
+                utils.clickById('iv_close');
             }
             back();
         }
