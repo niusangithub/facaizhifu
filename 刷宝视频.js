@@ -1,6 +1,6 @@
 "auto";
 const utils = require('./utils');
-const autoUtils = utils.init(true);
+const autoUtils = utils.init(false);
 
 //刷宝app
 var shuabao = {
