@@ -80,7 +80,7 @@ var huitoutiao = {
         if(newsItem){
             toast('text = '+newsItem.text());
             //判断是否是广告
-            if(newsItem && newsItem.text() == "广告"){
+            if(newsItem && newsItem.text().indexOf('广告') > -1){
                 newsItem = null;
             }
         }
