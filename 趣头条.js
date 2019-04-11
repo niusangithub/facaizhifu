@@ -2,16 +2,16 @@
 const utils = require('./utils');
 const autoUtils = utils.init(false);
 
-var qukantianxia ={
-    packageName:'趣看天下',
+var qutoutiao ={
+    packageName:'趣头条',
     init:function(){
-        toast('启动趣看天下app');
-        var isHasApp = autoUtils.startAPP(this.packageName);
-        if(!isHasApp)return;     
-        sleep(15000);//等待15s
-        this.close_indexBox();
-        this.todotask();    
-        this.lookArticle();
+        // toast('启动趣头条app');
+        // var isHasApp = autoUtils.startAPP(this.packageName);
+        // if(!isHasApp)return;     
+        // sleep(15000);//等待15s
+        // this.close_indexBox();
+        // this.todotask();    
+        //this.lookArticle();
     },
     //关闭首页弹窗
     close_indexBox:function(){

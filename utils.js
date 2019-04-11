@@ -92,6 +92,17 @@ var util = {
                 return dom_txt;
             }
         };
+        //在某个范围内通过textContains寻找控件 
+        utilsMap.findDomInsideByTextContains = function (txt, x, y, x1, y1) {
+            var dom_txt = textContains(txt).boundsInside(x, y, x1, y1).find();
+            if (dom_txt.empty()) {
+                toast('没有找到：' + txt);
+                return null;
+            } else {
+                toast('找到了：' + txt);
+                return dom_txt;
+            }
+        };
         //通过id，点击控件
         utilsMap.clickById = function (eleId) {
             var isflag = false; //是否存在
