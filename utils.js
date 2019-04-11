@@ -70,6 +70,17 @@ var util = {
                 return dom_txt;
             }
         };
+        //找到包含指定文本的控件
+        utilsMap.clickByContainsText = function (txt) {
+            var dom = textContains(txt).find();
+            if (dom.empty()) {
+                toast('没有找到：' + txt);
+                return null;
+            }else{
+                toast('找到了：' + txt);
+                return dom;
+            }
+        };
         //通过描述desc，查找dom
         utilsMap.findDomByDesc = function (txt) {
             var dom_txt = desc(txt).find();
