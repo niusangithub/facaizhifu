@@ -196,19 +196,20 @@ var util = {
             }
         };
 
-        //滑动阅读新闻
-        utilsMap.swapeToRead = function () {
+        //滑动阅读新闻 (参数部分为：停留间隔)
+        utilsMap.swapeToRead = function (sleepStart,sleepEnd) {
+            sleepStart = sleepStart || 1000;
+            sleepEnd = sleepEnd ||3000;
             if (isRoot) {
                 utilsMap.rootSwapeToRead();
             } else {
                 var swapetime = random(2000, 6000);
                 swipe(device.width / 2, device.height * 0.8,
                     device.width / 2, device.height * 0.5, swapetime);
-                toast('中场休息');
-                var sleeptime = random(1000, 3000);
+                var sleeptime = random(sleepStart, sleepEnd);
+                toast('中场休息'+sleeptime);
                 sleep(sleeptime);
             }
-
         };
 
         //点击底部Tab页切换:0,1,2,3,4
