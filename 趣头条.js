@@ -11,7 +11,7 @@ var qutoutiao ={
         // sleep(15000);//等待15s
         // this.close_indexBox();
         // this.todotask();    
-        //this.lookArticle();
+        this.lookArticle();
     },
     //关闭首页弹窗
     close_indexBox:function(){
@@ -23,20 +23,27 @@ var qutoutiao ={
     },
     //todotask
     todotask:function(){
-        toast('打开：每日金币');
-        var dom_task = text('每日金币').findOnce().bounds();
+        toast('打开：任务页面');
+        var dom_task = text('任务').findOnce().bounds();
         click(dom_task.centerX(),dom_task.centerY());
         sleep(3000);
         //关闭签到弹窗
-        var dom_huanyipi = autoUtils.findDomByText('换一批');
-        if(dom_huanyipi){
-            click(880,689);
-        }
-        sleep(1000);
-        back();
+        // var dom_huanyipi = autoUtils.findDomByText('换一批');
+        // if(dom_huanyipi){
+        //     click(880,689);
+        // }
+        // sleep(1000);
+       
     },
     lookOneArticle:function(){
-        var dom_adv = autoUtils.findDomInsideByText('广告',0,106,1080,1208);    
+    //    var dom_ob = id('ob').findOnce();
+    //     if(dom_ob){
+    //         toast(dom_ob.childCount());
+    //     }
+    //     toast(12);
+    //     return;
+        var dom_adv = autoUtils.findDomInsideByTextContains('广告',0,106,1080,1208);    
+        return;
         if(!dom_adv){
             //不是广告位
             click(autoUtils.width/2,370);
@@ -56,8 +63,27 @@ var qutoutiao ={
         }
         sleep(1000);
     },
+    //获取右上角的宝箱
+    getBoxMoney:function(){
+        var dom_vi = autoUtils.findDomById('vi');
+        if(dom_vi){
+            dom_vi.click();
+            sleep(2000);
+            back();
+        }
+    },
+
     //看文章
     lookArticle:function(){
+        //首页
+        // toast('打开：首页');
+        // var dom_task = text('头条').findOnce().bounds();
+        // click(dom_task.centerX(),dom_task.centerY());
+        // sleep(3000);
+        //this.getBoxMoney();
+        //swipe(autoUtils.width / 2, autoUtils.height / 6 * 5, autoUtils.width / 2, 120, 600);    
+        this.lookOneArticle();
+        return;
         while(true){
             this.lookOneArticle();
             swipe(autoUtils.width / 2, autoUtils.height / 6 * 5, autoUtils.width / 2, 1000, 600);    
@@ -65,4 +91,4 @@ var qutoutiao ={
     }
 };
 
-qukantianxia.init();
+qutoutiao.init();
