@@ -36,7 +36,7 @@ var zhognqing = {
         while(true){
 
             var randomvalue = random(100,200);//4的倍数时检查右上角是否可领取金币
-            toast('随机数 = '+randomvalue);
+            // toast('随机数 = '+randomvalue);
             if(randomvalue / 5 == 0){
                 utils.clickById('id_fragment_information_datecoins_layout');//点击右上角领取金币
                 sleep(1000);
