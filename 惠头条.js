@@ -9,6 +9,7 @@ var huitoutiao = {
         var isHasApp = utils.startAPP(this.appName);
         if(!isHasApp) return;
         utils.clickById('img_close');//关闭广告弹窗
+        utils.clickById('close_update_btn');//关闭升级弹窗
         this.taskCenterPage();//1. 开局，任务中心撸一波
         while(true){
             this.readFirstPage();//2. 首页是主力，不能放过
@@ -42,6 +43,7 @@ var huitoutiao = {
     //2. 阅读首页头条新闻
     readFirstPage:function(){
         utils.clickBottomTab(5,0); //点击底部tab
+        utils.clickById('close_update_btn');//关闭升级弹窗
         this.clickTimeGift(); //点击时段奖励
         this.clickJiangli();//点击右下角奖励
         for(var count=0;count<20;count++){//阅读20条新闻
