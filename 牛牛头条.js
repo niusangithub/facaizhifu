@@ -6,7 +6,7 @@ const autoUtils = utils.init(false);
 
 var niuniutoutiao ={
     packageName:'牛牛头条',
-    init:function(){
+    init:function(){       
         toast('启动牛牛头条app');
         var isHasApp = autoUtils.startAPP(this.packageName);
         if(!isHasApp)return;     
@@ -48,9 +48,10 @@ var niuniutoutiao ={
             sleep(1500);//等待文章加载
             var repeatCount = random(6,10);
             for(var i=0;i<repeatCount;i++){    
-                var dom_all = textContains('展开全文').find();
-                if(!dom_all.empty()){
-                    dom_all.click();
+                var dom_all = text('展开全文').findOnce();
+                if(dom_all){
+                    var bounds_all = dom_all.bounds();
+                    click(bounds_all.centerX(),bounds_all.centerY());
                     sleep(500);
                 }
                 autoUtils.swapeToRead(400,1000);
@@ -58,16 +59,16 @@ var niuniutoutiao ={
             sleep(1500);
             back();
         }
-        sleep(1000);
-       
+        sleep(2000);
     },
     //看文章
     lookArticle:function(){
-        // var dom_task = text('资讯').findOnce().bounds();
-        // click(dom_task.centerX(),dom_task.centerY());    
-        // sleep(2000);  
-        //this.getMoneyBox();  
-        this.lookOneArticle();
+        var dom_task = text('资讯').findOnce().bounds(); 
+        click(dom_task.centerX(),dom_task.centerY());    
+        sleep(2000);  
+        gesture(1000,  [500, 1000],[100,100]);
+        sleep(1000);
+        this.getMoneyBox();  
         var i = 0;
         while(true){
             i++;
