@@ -1,15 +1,17 @@
-var util = {
+/*
+ * @Author: mikey.quanyj 
+ * @Date: 2019-04-05 17:42:41 
+ * @Last Modified by: mikey.quanyj
+ * @Last Modified time: 2019-04-05 20:07:03
+ */
 
+var util = {
     init: function (isRoot) {
-        auto();
         var utilsMap = {};
         toast('初始化');
-        this.registerStopEvent();
         //add by wangguangbin，此文件可使用import方式导入使用
         utilsMap.width = device.width; //设备的宽
         utilsMap.height = device.height; //设备的高
-
-        console.show();
         //通过名字||包名，启动app
         utilsMap.startAPP = function (name) {
             var isHasApp = launchApp(name);
@@ -66,6 +68,17 @@ var util = {
             } else {
                 toast('找到了：' + txt);
                 return dom_txt;
+            }
+        };
+        //找到包含指定文本的控件
+        utilsMap.clickByContainsText = function (txt) {
+            var dom = textContains(txt).find();
+            if (dom.empty()) {
+                toast('没有找到：' + txt);
+                return null;
+            }else{
+                toast('找到了：' + txt);
+                return dom;
             }
         };
         //通过描述desc，查找dom
@@ -183,19 +196,20 @@ var util = {
             }
         };
 
-        //滑动阅读新闻
-        utilsMap.swapeToRead = function () {
+        //滑动阅读新闻 (参数部分为：停留间隔)
+        utilsMap.swapeToRead = function (sleepStart,sleepEnd) {
+            sleepStart = sleepStart || 1000;
+            sleepEnd = sleepEnd ||3000;
             if (isRoot) {
                 utilsMap.rootSwapeToRead();
             } else {
                 var swapetime = random(2000, 6000);
                 swipe(device.width / 2, device.height * 0.8,
                     device.width / 2, device.height * 0.5, swapetime);
-                toast('中场休息');
-                var sleeptime = random(1000, 3000);
+                var sleeptime = random(sleepStart, sleepEnd);
+                toast('中场休息'+sleeptime);
                 sleep(sleeptime);
             }
-
         };
 
         //点击底部Tab页切换:0,1,2,3,4
@@ -245,37 +259,6 @@ var util = {
         return utilsMap;
 
     },
-
-    registerStopEvent: function () {
-        events.observeKey();
-        events.on("key_down", function (keyCode, event) {
-            toast("菜单键按下" + keyCode);
-            //处理按键按下事件
-            if (keyCode == keys.back || keyCode == keys.menu || keyCode == keys.home) {
-                toast("菜单键按下");
-                exit();
-            }
-        });
-        events.onKeyDown("volume_up", function (event) {
-            toast("音量上键被按下了");
-            exit();
-        });
-        //监听菜单键按下
-        events.onKeyDown("menu", function (event) {
-            toast("菜单键被按下了");
-            exit();
-        });
-
-        //启用触摸监听
-        events.observeTouch();
-        //注册触摸监听器
-        events.onTouch(function (p) {
-            toast("停止事件");
-            exit();
-        });
-    }
-
-
 };
 
 

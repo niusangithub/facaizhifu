@@ -9,6 +9,7 @@ var huitoutiao = {
         var isHasApp = utils.startAPP(this.appName);
         if(!isHasApp) return;
         utils.clickById('img_close');//关闭广告弹窗
+        utils.clickById('close_update_btn');//关闭升级弹窗
         this.taskCenterPage();//1. 开局，任务中心撸一波
         while(true){
             this.readFirstPage();//2. 首页是主力，不能放过
@@ -22,15 +23,10 @@ var huitoutiao = {
     taskCenterPage:function(){
         utils.clickBottomTab(5,3); //点击底部tab
         sleep(500);
-        var clickResult = utils.clickById('sign_step_entrance');//签到
+        var clickResult = utils.clickById('sign_btn_container');//签到
         if(clickResult){
+            // toast('签到成功 = '+clickResult);
             sleep(1000);
-            var coinResult = utils.clickById('tv_receive');//领取金币
-            if(coinResult){
-                sleep(500);
-                back();
-                sleep(300);
-            }
             back();
         }
 
@@ -47,15 +43,17 @@ var huitoutiao = {
     //2. 阅读首页头条新闻
     readFirstPage:function(){
         utils.clickBottomTab(5,0); //点击底部tab
+        utils.clickById('close_update_btn');//关闭升级弹窗
         this.clickTimeGift(); //点击时段奖励
         this.clickJiangli();//点击右下角奖励
         for(var count=0;count<20;count++){//阅读20条新闻
             toast('count = '+count);
             this.readNewsDetail();
-            sleep(1000);
+            sleep(500);
             //滑动新闻列表
             swipe(device.width / 2, device.height * 0.8 ,
                 device.width / 2, device.height * 0.5, 2000);
+            sleep(500);
         }
     },
 
@@ -84,7 +82,7 @@ var huitoutiao = {
         if(newsItem){
             toast('text = '+newsItem.text());
             //判断是否是广告
-            if(newsItem && newsItem.text() == "广告"){
+            if(newsItem && newsItem.text().indexOf('广告') > -1){
                 newsItem = null;
             }
         }

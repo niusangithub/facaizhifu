@@ -1,5 +1,5 @@
 const utils = require('./utils');
-const autoUtils = utils.init();
+const autoUtils = utils.init(true);
 
 //百度知道
 var yuetoutiao = {
@@ -10,9 +10,6 @@ var yuetoutiao = {
     init: function () {
         this.lastTitleList = {}; //阅读过的视频列表
         this.swipeCount = 0;
-        // this.totalNewsReaded = 0; //已经阅读的新闻条数 
-        // this.totalNewsOneTime = 50; //一次性阅读多少条新闻 
-        // this.loopTimeToFindNews = 20; //找了多少次新闻找不到会退出 
         this.newsList = [];
         this.isfirst = true;
         // sleep(5000); //等待15s
@@ -82,18 +79,18 @@ var yuetoutiao = {
         //     back();
         //     return false;
         // }
-        return utils.findDomById("rv_read_progress");
+        return autoUtils.findDomById("rv_read_progress");
     },
     checkHome: function () {
         var flag = false;
         for (let i = 0; i < 5; i++) {
-            var ivClose = utils.findDomById("iv_close");
+            var ivClose = autoUtils.findDomById("iv_close");
             if (!ivClose) {
                 flag = false;
                 break;
             } else {
                 flag = true;
-                utils.click("iv_close");
+                autoUtils.clickById("iv_close");
                 sleep(3000);
             }
         }
@@ -158,10 +155,10 @@ var yuetoutiao = {
     readNews: function (seconds) {
         //滑动阅读新闻
         for (var i = 0; i < seconds / 10; i++) {
-            utils.swapeToRead();
+            autoUtils.swapeToRead();
         }
         console.log("返回");
-        utils.back();
+        autoUtils.back();
 
     },
     pushNews: function (type, childVideo) {
@@ -194,8 +191,6 @@ var init = function () {
     var isHasApp = autoUtils.startAPP(AppName);
     if (!isHasApp) return;
     sleep(5000); //等待15s
-    threads.start(function () {
-        yuetoutiao.init();
-    });
+    yuetoutiao.init();
 }
 init();

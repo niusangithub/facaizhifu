@@ -1,227 +1,122 @@
 "auto";
-var Common = {
-    width: device.width, //设备的宽
-    height: device.height, //设备的高
-    //通过名字||包名，启动app
-    startAPP: function (name) {
-        var isHasApp = launchApp(name);
-        if (!isHasApp) {
-            toast('手机未安装：' + name);
-        } else {
-            //设置屏幕缩放
-            setScreenMetrics(1080, 1920);
-            sleep(5000); //停顿5s
-            var dom_allow = this.findDomByText('允许');
-            if (dom_allow) {               
-                dom_allow.click();
-            } 
-        }
-        return isHasApp;
-    },
-    //通过包名，关闭app
-    closeApp:function(packageName){
-        try{
-            packageName =packageName || currentPackage();
-            var result = app.openAppSetting(packageName);
-            if(result){
-                sleep(2000);
-                this.findDomByText('结束运行').click();
-                sleep(1000);
-                this.findDomByText('确定').click();
-                home();
-                sleep(200);
-                home();
-            }
-        }catch(ex){
-            home();
-            sleep(200);
-            home();
-        }
-    },
-    //通过id，查找dom
-    findDomById: function (idStr) {
-        var dom_txt = id(idStr).find();
-        if (dom_txt.empty()) {
-            toast('没有找到：' + idStr);
-            return null;
-        } else {
-            toast('找到了：' + idStr);
-            return dom_txt;
-        }
-    },
-    //通过文本，查找dom
-    findDomByText: function (txt) {
-        var dom_txt = text(txt).find();
-        if (dom_txt.empty()) {
-            toast('没有找到：' + txt);
-            return null;
-        } else {
-            toast('找到了：' + txt);
-            return dom_txt;
-        }
-    },
-    //通过描述desc，查找dom
-    findDomByDesc:function(txt){
-        var dom_txt = desc(txt).find();
-        if (dom_txt.empty()) {
-            toast('没有找到：' + txt);
-            return null;
-        } else {
-            toast('找到了：' + txt);
-            return dom_txt;
-        }
-    },
-    //在某个范围内通过text寻找控件
-    findDomInsideByText:function(txt,x,y,x1,y1){
-        var dom_txt = text(txt).boundsInside(x,y,x1,y1).find();
-        if (dom_txt.empty()) {
-            toast('没有找到：' + txt);
-            return null;
-        } else {
-            toast('找到了：' + txt);
-            return dom_txt;
-        }
-    },
-    //通过id，点击控件
-    clickById:function(idStr){
-        var isflag = false; //是否存在
-        var dom = id(idStr).findOnce();
-        if(dom){
-            isflag = true;
-            dom.click();
-        }
-        sleep(1000);
-        return isflag;
-    },
-    //通过text，点击控件
-    clickByText:function(txt){
-        var isflag = false; //是否存在
-        var dom = text(txt).findOnce();
-        if(dom){
-            isflag = true;
-            dom.click();
-        }
-        sleep(1000);
-        return isflag;
-    },
-     //通过desc，点击控件
-    clickByDesc:function(txt){
-        var isflag = false; //是否存在
-        var dom = desc(txt).findOnce();
-        if(dom){
-            isflag = true;
-            dom.click();
-        }
-        sleep(1000);
-        return isflag;
-    },
-    //双击
-    doubleClick:function(x,y){
-        click(x,y);
-        sleep(100)
-        click(x,y);
-    },
-    //以下方法，root权限才可用
-    tap: function (x, y) {
-        var ra = new RootAutomator();
-        //让"手指1"点击位置(100, 100)
-        toast("点击");
-        ra.press(x, y, 1);
-        ra.exit();
-    },
-    swipe: function () {
-        var ra = new RootAutomator();
-        ra.swipe(Common.width / 2, Common.height * 0.8, Common.width / 2, Common.height / 8 * 0.4, 1000);
-        ra.exit();
-    },
+const utils = require('./utils');
+const autoUtils = utils.init(false);
+//1、分享收入
+//2、阅读过程中，遇到 时段奖励bug
+//3、阅读完毕后，领取金币
 
-};
 
 var wangyi = {
-    packageName:'com.netease.news.lite',
-    init:function(){
+    packageName:'网易新闻极速版',
+    shareCount:0,
+    minutesMoney:40,//看40分钟有奖励
+    init:function(){      
         toast('启动网易新闻app');
-        // var isHasApp = Common.startAPP(this.packageName);
-        // if(!isHasApp)return;     
-        // sleep(15000);//等待15s
-      // this.closeBox();
-      // this.todoTask();
+        var isHasApp = autoUtils.startAPP(this.packageName);
+        if(!isHasApp)return;     
+        sleep(15000);//等待15s
+        this.closeBox();
+       this.todoTask();
         this.lookArticle();
-
     },
     //关闭弹窗
     closeBox:function(){
-        var dom_close = Common.findDomById('u4');
+        var dom_close = autoUtils.findDomById('u4');
         if(dom_close){
             dom_close.click();
         }
+        sleep(1000);
     },
     todoTask:function(){
-        // var dom_task = text('任务').findOnce().bounds();
-        // click(dom_task.centerX(),dom_task.centerY());
-        // sleep(2000);
+        var dom_task = text('任务').findOnce().bounds();
+        click(dom_task.centerX(),dom_task.centerY());
+        sleep(3000);
         //签到
-        var dom_sign = Common.findDomByText('签到领金币');
+        var dom_sign = autoUtils.findDomByText('签到领金币');
         if(dom_sign){
             dom_sign.click();
             sleep(1000);
             click(530,1700);
         }
-        //分享新闻
-
+        sleep(1000);
         //分享收入
 
-        //宝箱
-
         //40分钟后，领取宝箱
-
+    },
+    //分享文章
+    shareArticle:function(){
+        for(var i=0;i<2;i++){
+            this.shareCount++;
+            var dom_ais = autoUtils.findDomById('ais');
+            if(dom_ais){
+                dom_ais.click();
+                sleep(1800);
+                var dom_wx = autoUtils.findDomByText('微信');
+                if(dom_wx){
+                    var bounds_wx = text('微信').findOnce().bounds();
+                    click(bounds_wx.centerX(),bounds_wx.centerY()-30);
+                    sleep(3000);
+                    back();
+                }
+            }
+            sleep(2000);
+        }
     },
     lookOneArticle:function(){
-
-        //检测右上角是否可以开宝箱
-        if(Common.findDomByText('领取40金币')){
-            var dom_1 = id('ax8').findOnce();
-            dom_1.click();
-            sleep(1000);
-            click(520,1650);
-            sleep(500);
+        //检测右上角是否可以开宝箱，bug
+        // if(autoUtils.findDomByText('领取40金币')){
+        //     var dom_1 = id('ax8').findOnce();
+        //     dom_1.click();
+        //     sleep(1000);
+        //     click(520,1650);
+        //     sleep(500);
+        // }
+        //其他弹窗
+        var dom_box1 = autoUtils.findDomById('an2');
+        if(dom_box1){
+            var dom_box1_close = autoUtils.findDomById('os');
+            if(dom_box1_close){
+                dom_box1_close.click();
+            }
         }
-
-        var dom_adv = Common.findDomInsideByText('广告',0,106,1080,1208);    
+        sleep(1000);
+        var dom_adv = autoUtils.findDomInsideByText('广告',0,106,1080,1208);    
         if(!dom_adv){
             //不是广告位
-            click(Common.width/2,370);
-            sleep(1200);//等待文章加载
-            for(var i=0;i<14;i++){                
+            click(autoUtils.width/2,370);
+            sleep(2000);//等待文章加载
+            for(var i=0;i<14;i++){   
+                //如果是视频，需要点击重新播放
+                var dom_reload = autoUtils.findDomByText('重播');
+                if(dom_reload){
+                    dom_reload.click();
+                    sleep(1000);
+                    i++;
+                }
+                //继续阅读文章
                 var scrollHeight = random(800,1000);//滑动的距离               
                 var sleepTime = random(1200,2000);//睡眠时长
-                var dom_lookall = Common.findDomByText('查看全文');
+                var dom_lookall = autoUtils.findDomByText('查看全文');
                 if(dom_lookall){
                     dom_lookall.click();
                     sleep(400);
                 }
-                swipe(Common.width / 2, Common.height / 6 * 5, Common.width / 2, scrollHeight, 600);    
+                swipe(autoUtils.width / 2, autoUtils.height / 6 * 5, autoUtils.width / 2, scrollHeight, 600);    
                 sleep(sleepTime);
             }          
             back();
         }
         sleep(1000);
-
     },
     lookArticle:function(){
         //首页： 右上角宝箱
-        // var dom_task = text('首页').findOnce().bounds();
-        // click(dom_task.centerX(),dom_task.centerY());    
-        // sleep(1000);       
-        for(var i=0;i<300;i++){
+        var dom_task = text('首页').findOnce().bounds();
+        click(dom_task.centerX(),dom_task.centerY());    
+        sleep(1000);       
+        while(true){
             this.lookOneArticle();
-            swipe(Common.width / 2, Common.height / 6 * 5, Common.width / 2, 800, 600);    
+            swipe(autoUtils.width / 2, autoUtils.height / 6 * 5, autoUtils.width / 2, 800, 600);    
         }
-
     },
-
-    
-
-
 };
 wangyi.init();
