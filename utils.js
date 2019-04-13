@@ -56,7 +56,7 @@ var util = {
                 return null;
             } else {
                 toast('找到了：' + idStr);
-                return dom_txt;
+                return dom_txt[0];
             }
         };
         //通过文本，查找dom
